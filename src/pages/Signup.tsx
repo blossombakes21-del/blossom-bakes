@@ -24,18 +24,8 @@ export default function Signup() {
 
       if (error) throw error;
 
-      if (data.user) {
-        // 2. Insert into profiles with role 'employee'
-        const { error: profileError } = await supabase.from('profiles').insert([
-          { id: data.user.id, email: email, role: 'employee' }
-        ]);
-        
-        if (profileError) {
-          // If profile fails, log it, but the user is signed up
-          console.error("Profile creation error:", profileError);
-          // Let's not fail the whole process if RLS stops it, but ideally RLS allows this
-        }
-      }
+      // The database automatically creates the 'employee' profile via a SQL trigger, 
+      // so we don't need to manually insert it here!
 
       // 3. Navigate to root (Dashboard) which will show employee view
       navigate('/');
