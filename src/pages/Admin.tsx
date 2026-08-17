@@ -4,7 +4,7 @@ import { LogOut, ShieldCheck, Users, Settings as SettingsIcon, Database, Bell, A
 import { getLogs } from '../lib/audit';
 
 export default function Admin() {
-  const { logoutMock } = useAuth();
+  const { logout } = useAuth();
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<any[]>([]);
 
@@ -20,9 +20,7 @@ export default function Admin() {
 
   const handleLogout = async () => {
     setLoading(true);
-    setTimeout(() => {
-        logoutMock();
-    }, 500);
+    await logout();
   };
 
   const deleteAttempts = logs.filter(log => log.action === 'DELETE_ATTEMPT');
@@ -52,39 +50,6 @@ export default function Admin() {
       </header>
 
       <div className="space-y-4">
-        {/* Audit Logs & Alerts */}
-        <div className="bg-white rounded-2xl shadow-sm border border-red-100 overflow-hidden">
-          <div className="p-4 border-b border-gray-50 flex items-center justify-between">
-            <h2 className="font-semibold text-gray-800 flex items-center">
-              <AlertTriangle className="text-red-500 mr-2" size={18} />
-              Recent Activity & Alerts
-            </h2>
-            <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">{logs.length} total</span>
-          </div>
-          <div className="max-h-60 overflow-y-auto">
-            {logs.length === 0 ? (
-              <p className="text-sm text-gray-500 p-4 text-center">No recent activity.</p>
-            ) : (
-              <ul className="divide-y divide-gray-50">
-                {logs.slice(0, 20).map((log, idx) => (
-                  <li key={idx} className={`p-4 ${log.action === 'DELETE_ATTEMPT' ? 'bg-red-50' : 'hover:bg-gray-50'} transition-colors`}>
-                    <div className="flex justify-between items-start mb-1">
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${log.action.includes('DELETE') ? 'bg-red-100 text-red-600' : log.action === 'STOCK_IN' ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-orange-600'}`}>
-                        {log.action}
-                      </span>
-                      <span className="text-[10px] text-gray-400">
-                        {new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
-                    <p className="text-sm font-medium text-gray-800">{log.item_name} {log.quantity_changed ? `(${log.quantity_changed})` : ''}</p>
-                    {log.details && <p className="text-xs text-gray-500 mt-1">{log.details}</p>}
-                    <p className="text-[10px] text-gray-400 mt-1">User: {log.user}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
 
         {/* Admin Actions */}
         <div className="bg-white rounded-2xl shadow-sm border border-pink-100 overflow-hidden">

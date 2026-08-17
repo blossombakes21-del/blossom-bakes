@@ -58,6 +58,38 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Admin Only: Recent Activity Logs */}
+      {role === 'admin' && (
+        <section className="mb-8">
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-lg font-semibold text-gray-800">Recent Activity</h2>
+            <span className="text-xs font-semibold bg-red-100 text-red-600 px-2 py-1 rounded-full">Admin Only</span>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-pink-100 overflow-hidden">
+             {/* Note: We will fetch real logs here later, for now we show a placeholder or empty state to match the beautiful UI */}
+             <div className="p-5 flex flex-col space-y-4">
+                <div className="flex items-start space-x-3 p-3 bg-red-50 rounded-xl border border-red-100">
+                   <div className="bg-red-100 p-2 rounded-lg"><AlertCircle className="text-red-500" size={16} /></div>
+                   <div>
+                      <p className="text-sm font-semibold text-gray-800">Unauthorized Delete Attempt</p>
+                      <p className="text-xs text-gray-500 mt-0.5">Employee tried to delete 'Croissant'.</p>
+                      <p className="text-[10px] text-gray-400 mt-1">Today, 10:42 AM</p>
+                   </div>
+                </div>
+                <div className="flex items-start space-x-3 p-3 bg-green-50 rounded-xl border border-green-100">
+                   <div className="bg-green-100 p-2 rounded-lg"><Package className="text-green-600" size={16} /></div>
+                   <div>
+                      <p className="text-sm font-semibold text-gray-800">Stock Added</p>
+                      <p className="text-xs text-gray-500 mt-0.5">Added 10 Baguettes.</p>
+                      <p className="text-[10px] text-gray-400 mt-1">Today, 09:15 AM</p>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </section>
+      )}
+
+
       {/* All Inventory */}
       <section className="pb-8">
         <h2 className="text-lg font-semibold text-gray-800 mb-3">Current Inventory</h2>
