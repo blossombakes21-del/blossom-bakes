@@ -1,55 +1,62 @@
 import { useState, useEffect } from 'react';
 import { supabase } from './supabase';
+import { Session } from '@supabase/supabase-js';
 
 export function useAuth() {
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [role, setRole] = useState<'admin' | 'employee' | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check local storage for mock role first for demonstration
-    const mockRole = localStorage.getItem('mock_role') as 'admin' | 'employee' | null;
-    
+    // 1. Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      if (session && mockRole) {
-         setRole(mockRole);
-      } else if (session) {
-         // In real DB, fetch from profiles:
-         // supabase.from('profiles').select('role').eq('id', session.user.id)...
-         setRole('employee'); // Default
-      } else if (mockRole) {
-         // Mock session
-         setSession({ user: { email: 'mock@blossom.com' } });
-         setRole(mockRole);
+      if (session) {
+        fetchRole(session.user.id);
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
+    // 2. Listen for auth changes (login, logout, etc)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session) {
-          const storedRole = localStorage.getItem('mock_role') as 'admin' | 'employee' | null;
-          setRole(storedRole || 'employee');
+        fetchRole(session.user.id);
+      } else {
+        setRole(null);
+        setLoading(false);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const loginMock = (selectedRole: 'admin' | 'employee') => {
-      localStorage.setItem('mock_role', selectedRole);
-      setSession({ user: { email: 'mock@blossom.com' } });
-      setRole(selectedRole);
+  const fetchRole = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', userId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching role:', error);
+      } else if (data) {
+        setRole(data.role as 'admin' | 'employee');
+      }
+    } catch (err) {
+      console.error('Unexpected error fetching role:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const logoutMock = () => {
-      localStorage.removeItem('mock_role');
-      setSession(null);
-      setRole(null);
-  }
+  const logout = async () => {
+    await supabase.auth.signOut();
+  };
 
-  return { session, role, loading, loginMock, logoutMock };
+  return { session, role, loading, logout };
 }

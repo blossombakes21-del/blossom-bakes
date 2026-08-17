@@ -7,6 +7,8 @@ import StockOut from './pages/StockOut';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 
+import Signup from './pages/Signup';
+
 function App() {
   const { session, role, loading } = useAuth();
 
@@ -20,6 +22,7 @@ function App() {
         <main className="flex-1 overflow-y-auto">
           <Routes>
             <Route path="/login" element={!session ? <Login /> : <Navigate to="/" />} />
+            <Route path="/signup" element={!session ? <Signup /> : <Navigate to="/" />} />
             
             {/* Protected Routes */}
             <Route path="/" element={session ? <Dashboard /> : <Navigate to="/login" />} />

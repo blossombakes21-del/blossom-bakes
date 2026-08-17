@@ -1,32 +1,46 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Croissant, LogIn } from 'lucide-react';
+import { Croissant, UserPlus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg('');
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      // 1. Sign up the user
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
 
       if (error) throw error;
-      
-      // Navigate to Dashboard on successful login
+
+      if (data.user) {
+        // 2. Insert into profiles with role 'employee'
+        const { error: profileError } = await supabase.from('profiles').insert([
+          { id: data.user.id, email: email, role: 'employee' }
+        ]);
+        
+        if (profileError) {
+          // If profile fails, log it, but the user is signed up
+          console.error("Profile creation error:", profileError);
+          // Let's not fail the whole process if RLS stops it, but ideally RLS allows this
+        }
+      }
+
+      // 3. Navigate to root (Dashboard) which will show employee view
       navigate('/');
     } catch (error: any) {
-      setErrorMsg(error.message || 'Invalid login credentials.');
+      setErrorMsg(error.message || 'An error occurred during signup.');
     } finally {
       setLoading(false);
     }
@@ -41,10 +55,10 @@ export default function Login() {
               <Croissant size={48} />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">Blossom Bakes</h2>
-          <p className="text-center text-sm text-gray-500 mb-8">Login to your account</p>
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">Join Blossom Bakes</h2>
+          <p className="text-center text-sm text-gray-500 mb-8">Create an employee account</p>
           
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleSignup} className="space-y-4">
             <div>
               <input
                 type="email"
@@ -58,7 +72,7 @@ export default function Login() {
             <div>
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="Password (min 6 chars)"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -75,20 +89,17 @@ export default function Login() {
               disabled={loading}
               className="w-full bg-pink-500 text-white font-semibold py-4 rounded-xl hover:bg-pink-600 transition-colors shadow-md disabled:opacity-70 flex justify-center items-center"
             >
-              <LogIn className="mr-2" size={20} />
-              {loading ? 'Logging in...' : 'Login'}
+              <UserPlus className="mr-2" size={20} />
+              {loading ? 'Signing up...' : 'Create Account'}
             </button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
-            Don't have an account?{' '}
-            <Link to="/signup" className="text-pink-600 font-semibold hover:underline">
-              Sign up here
+            Already have an account?{' '}
+            <Link to="/login" className="text-pink-600 font-semibold hover:underline">
+              Log in here
             </Link>
           </div>
-        </div>
-        <div className="bg-gray-50 px-8 py-4 text-center text-xs text-gray-500">
-          Secure Bakery Inventory Management
         </div>
       </div>
     </div>
