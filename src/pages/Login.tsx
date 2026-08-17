@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Croissant, LogIn } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
