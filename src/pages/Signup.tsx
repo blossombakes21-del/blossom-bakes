@@ -4,8 +4,8 @@ import { Croissant, UserPlus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function Signup() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('blossombakes21@gmail.com');
+  const [password, setPassword] = useState('Blossom@21');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
