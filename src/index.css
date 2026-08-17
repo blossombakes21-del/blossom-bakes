@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 330 100% 98%; /* fdf2f8 - pink-50 */
+    --foreground: 330 20% 15%; /* dark pink/brown */
+    --primary: 330 80% 60%; /* pink-500 */
+    --primary-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 330 20% 15%;
+    --border: 330 30% 90%;
+    --ring: 330 80% 60%;
+    --radius: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #fbcfe8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f472b6;
+}

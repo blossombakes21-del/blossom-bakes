@@ -1,0 +1,7 @@
+{
+  "name": "Blossom Bakes",
+  "description": "A high-density bakery stock logging application with Indian Rupees pricing, category controls, separate log pages for additions and deductions, and Supabase backup sync.",
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
