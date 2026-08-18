@@ -20,8 +20,6 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-        {session && <TopHeader />}
-        
         <main className="flex-1 overflow-y-auto">
           <Routes>
             <Route path="/login" element={!session ? <Login /> : <Navigate to="/" />} />

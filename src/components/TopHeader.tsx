@@ -1,11 +1,32 @@
-import { Search, Plus, Cloud, Smartphone, ChefHat } from 'lucide-react';
+import { Search, Plus, Cloud, Smartphone, ChefHat, ExternalLink, MonitorSmartphone, RotateCw, Maximize2 } from 'lucide-react';
 import { useAuth } from '../lib/useAuth';
 
-export default function TopHeader() {
+export default function TopHeader({ onAddNewItem }: { onAddNewItem?: () => void }) {
   const { role } = useAuth();
   
   return (
     <div className="w-full flex flex-col shadow-sm sticky top-0 z-50 bg-white">
+      {/* Fake AI Studio Wrapper Header */}
+      <div className="bg-white border-b border-gray-200 py-2 px-4 flex justify-between items-center text-sm text-gray-700">
+        <div className="flex-1 text-center font-medium">Blossom Bakery Inventory</div>
+        <div className="flex items-center space-x-3">
+          <button className="flex items-center space-x-1 border border-gray-300 rounded px-3 py-1 hover:bg-gray-50 text-xs">
+            <ExternalLink size={14} className="-scale-x-100" />
+            <span>Remix</span>
+          </button>
+          <button className="flex items-center space-x-1 hover:bg-gray-50 px-2 py-1 rounded text-xs">
+            <MonitorSmartphone size={14} />
+            <span>Device</span>
+          </button>
+          <button className="p-1 hover:bg-gray-100 rounded">
+            <RotateCw size={14} />
+          </button>
+          <button className="p-1 hover:bg-gray-100 rounded">
+            <Maximize2 size={14} />
+          </button>
+        </div>
+      </div>
+
       {/* Red Notification Bar */}
       <div className="bg-[#e74c3c] text-white text-xs font-semibold py-1.5 px-4 flex justify-between items-center">
         <div className="flex items-center space-x-4 uppercase tracking-wider">
@@ -52,7 +73,10 @@ export default function TopHeader() {
         {/* Action Buttons */}
         <div className="flex items-center space-x-3">
           {role === 'admin' && (
-            <button className="hidden sm:flex items-center space-x-1 bg-[#e74c3c] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#c0392b] transition shadow-sm">
+            <button 
+              onClick={onAddNewItem}
+              className="hidden sm:flex items-center space-x-1 bg-[#e74c3c] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#c0392b] transition shadow-sm"
+            >
               <Plus size={16} />
               <span>Add New Item</span>
             </button>
