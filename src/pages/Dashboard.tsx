@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Package, AlertCircle, Info, Plus, TrendingDown, TrendingUp, ShoppingBag, History, FileText, Settings, Search } from 'lucide-react';
+import { Package, AlertCircle, Info, Plus, TrendingDown, TrendingUp, ShoppingBag, History, FileText, Settings, Search, RotateCw } from 'lucide-react';
 import { useAuth } from '../lib/useAuth';
 import NavigationTabs from '../components/NavigationTabs';
 import CategoryPills from '../components/CategoryPills';

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { X, Image as ImageIcon, Camera, Link as LinkIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Image as ImageIcon, Camera, Link as LinkIcon, Plus } from 'lucide-react';
 
 const PRESETS = [
   { name: 'Belgian Truffle Cake', url: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=300&q=80' },
