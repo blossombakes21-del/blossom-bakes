@@ -184,19 +184,19 @@ export default function Dashboard() {
             </div>
 
             {/* Filter Tabs */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-2 flex items-center justify-between">
-              <div className="flex space-x-1">
-                <button onClick={() => setLogFilter('all')} className={`px-5 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-2 transition ${logFilter === 'all' ? 'bg-[#1a202c] text-white' : 'text-gray-600 hover:bg-gray-100'}`}>
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-2 flex flex-col lg:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-1 w-full lg:w-auto overflow-x-auto">
+                <button onClick={() => setLogFilter('all')} className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center space-x-2 transition whitespace-nowrap ${logFilter === 'all' ? 'bg-[#1a202c] text-white' : 'text-gray-600 hover:bg-gray-100'}`}>
                   <FileText size={16} /> <span>All Activity Logs (1)</span>
                 </button>
-                <button onClick={() => setLogFilter('add')} className={`px-5 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-2 text-emerald-600 transition ${logFilter === 'add' ? 'bg-emerald-50' : 'hover:bg-gray-100'}`}>
+                <button onClick={() => setLogFilter('add')} className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center space-x-2 text-emerald-600 transition whitespace-nowrap ${logFilter === 'add' ? 'bg-emerald-50' : 'hover:bg-gray-100'}`}>
                   <Plus size={16} /> <span>Stock Additions Page</span>
                 </button>
-                <button onClick={() => setLogFilter('deduct')} className={`px-5 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-2 text-[#e74c3c] transition ${logFilter === 'deduct' ? 'bg-red-50' : 'hover:bg-gray-100'}`}>
+                <button onClick={() => setLogFilter('deduct')} className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center space-x-2 text-[#e74c3c] transition whitespace-nowrap ${logFilter === 'deduct' ? 'bg-red-50' : 'hover:bg-gray-100'}`}>
                   <TrendingDown size={16} /> <span>Stock Deductions Page</span>
                 </button>
               </div>
-              <div className="flex items-center space-x-3 px-4 text-sm font-semibold text-gray-500">
+              <div className="flex items-center space-x-3 px-4 text-xs sm:text-sm font-semibold text-gray-500 w-full lg:w-auto justify-between lg:justify-end overflow-x-auto whitespace-nowrap pb-2 lg:pb-0">
                 <span className="text-gray-800">All</span>
                 <span>Today</span>
                 <span>Yesterday</span>

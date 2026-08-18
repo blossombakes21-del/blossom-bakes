@@ -70,21 +70,86 @@ export default function AddItemModal({ isOpen, onClose, onAdd }: { isOpen: boole
               </div>
 
               {imageTab === 'presets' && (
-                <div className="flex gap-4 items-center">
+                <div className="flex flex-col sm:flex-row gap-4 items-center">
                   <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-[#e74c3c] flex-shrink-0 bg-gray-100">
-                    <img src={selectedImage} alt="Selected" className="w-full h-full object-cover" />
+                    {selectedImage ? (
+                      <img src={selectedImage} alt="Selected" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <ImageIcon size={24} />
+                      </div>
+                    )}
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 flex-1">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 flex-1 w-full">
                     {PRESETS.map((preset) => (
                       <button 
                         key={preset.name} 
                         type="button"
                         onClick={() => setSelectedImage(preset.url)}
-                        className={`text-xs font-semibold px-3 py-2 rounded-lg border transition text-center ${selectedImage === preset.url ? 'border-[#e74c3c] text-[#e74c3c] bg-red-50' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}
+                        className={`text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-2 rounded-lg border transition text-center ${selectedImage === preset.url ? 'border-[#e74c3c] text-[#e74c3c] bg-red-50' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}
                       >
                         {preset.name}
                       </button>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {imageTab === 'upload' && (
+                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                  <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-[#e74c3c] flex-shrink-0 bg-gray-100">
+                    {selectedImage && selectedImage.startsWith('data:') ? (
+                      <img src={selectedImage} alt="Selected" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <Camera size={24} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 w-full border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:bg-gray-50 transition cursor-pointer relative">
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      capture="environment"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setSelectedImage(reader.result as string);
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                    <Camera className="mx-auto text-gray-400 mb-2" size={24} />
+                    <p className="text-sm font-semibold text-gray-600">Tap to take a photo or choose from gallery</p>
+                    <p className="text-xs text-gray-400 mt-1">Supports JPG, PNG (Max 5MB)</p>
+                  </div>
+                </div>
+              )}
+
+              {imageTab === 'url' && (
+                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                  <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-[#e74c3c] flex-shrink-0 bg-gray-100">
+                    {selectedImage ? (
+                      <img src={selectedImage} alt="Selected" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <LinkIcon size={24} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 w-full">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Image URL</label>
+                    <input 
+                      type="url" 
+                      value={selectedImage.startsWith('http') ? selectedImage : ''} 
+                      onChange={(e) => setSelectedImage(e.target.value)} 
+                      placeholder="https://example.com/image.jpg" 
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#e74c3c] focus:ring-1 focus:ring-[#e74c3c]" 
+                    />
                   </div>
                 </div>
               )}
