@@ -3,7 +3,7 @@
 
 -- 1. Profiles Table (extends Supabase Auth)
 CREATE TABLE profiles (
-  id UUID REFERENCES auth.users(id) PRIMARY KEY,
+  id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   email TEXT NOT NULL,
   role TEXT NOT NULL CHECK (role IN ('admin', 'employee')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
